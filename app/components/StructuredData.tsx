@@ -1,4 +1,4 @@
-import { Gallery } from '../types/gallery'
+import { Gallery } from '../../types/gallery'
 
 interface StructuredDataProps {
   gallery: Gallery

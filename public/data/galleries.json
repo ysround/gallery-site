@@ -11,7 +11,8 @@
         { "src": "/gallery/1/00013-700230855.jpeg", "alt": "Desert sunset" },
         { "src": "/gallery/1/00016-2102514085.jpeg", "alt": "Serene lake" },
         { "src": "/gallery/1/00017-3234618193.jpeg", "alt": "Desert sunset" }
-      ]
+      ],
+      "categories": [1, 3]
     },
     {
       "id": 2,
@@ -23,7 +24,8 @@
         { "src": "/gallery/2/00039-322178327.jpeg", "alt": "Busy street" },
         { "src": "/gallery/2/00162-3140604400.jpeg", "alt": "Modern architecture" },
         { "src": "/gallery/2/ComfyUI_02319_.jpeg", "alt": "Night city lights" }
-      ]
+      ],
+      "categories": [2, 3]
     },
     {
       "id": 3,
@@ -35,6 +37,7 @@
         { "src": "/gallery/3/ComfyUI_02388_.jpeg", "alt": "Geometric patterns" },
         { "src": "/gallery/3/ComfyUI_02401_.jpeg", "alt": "Fluid art" },
         { "src": "/gallery/3/ComfyUI_02403_.jpeg", "alt": "Minimalist composition" }
-      ]
+      ],
+      "categories": [2, 3]
     }
   ]

@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Nature",
+      "description": "Breathtaking natural landscapes"
+    },
+    {
+      "id": 2,
+      "name": "Urban",
+      "description": "City life and architecture"
+    },
+    {
+      "id": 3,
+      "name": "People",
+      "description": "Portraits and human interactions"
+    }
+  ]

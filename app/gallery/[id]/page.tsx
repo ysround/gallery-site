@@ -1,7 +1,9 @@
 import Image from 'next/image';
-import { Metadata, ResolvingMetadata } from 'next'
-import { getGalleryById } from '../../utils/galleryData';
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { getGalleryById, getCategoryById } from '@/utils/galleryData';
 import GalleryClient from './GalleryClient';
+import { Category } from '@/types/gallery';
 
 interface GalleryPageProps {
   params: {
@@ -9,12 +11,9 @@ interface GalleryPageProps {
   };
 }
 
-export async function generateMetadata(
-  { params }: GalleryPageProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const id = parseInt(params.id);
-  const gallery = getGalleryById(id);
+export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
+  const galleryId = parseInt(params.id);
+  const gallery = await getGalleryById(galleryId);
 
   if (!gallery) {
     return {
@@ -22,39 +21,22 @@ export async function generateMetadata(
     };
   }
 
-  const previousImages = (await parent).openGraph?.images || []
-
   return {
     title: gallery.title,
     description: gallery.description,
-    openGraph: {
-      title: gallery.title,
-      description: gallery.description,
-      images: [
-        {
-          url: gallery.coverImage,
-          width: 1200,
-          height: 630,
-          alt: gallery.title,
-        },
-        ...previousImages
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: gallery.title,
-      description: gallery.description,
-      images: [gallery.coverImage],
-    },
-  }
+  };
 }
 
-export default function GalleryPage({ params }: GalleryPageProps) {
-  const gallery = getGalleryById(parseInt(params.id));
+export default async function GalleryPage({ params }: GalleryPageProps) {
+  const galleryId = parseInt(params.id);
+  const gallery = await getGalleryById(galleryId);
 
   if (!gallery) {
     return <div>Gallery not found</div>;
   }
+
+  const categoryPromises = gallery.categories.map(getCategoryById);
+  const categories = (await Promise.all(categoryPromises)).filter((category): category is Category => category !== undefined);
 
   return (
     <div>
@@ -69,8 +51,19 @@ export default function GalleryPage({ params }: GalleryPageProps) {
         />
       </div>
       <h1 className="text-3xl font-bold mb-4">{gallery.title}</h1>
-      <p className="mb-6">{gallery.description}</p>
-      
+      <p className="mb-4">{gallery.description}</p>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Categories:</h2>
+        <div className="flex flex-wrap gap-2">
+          {categories.map(category => (
+            <Link key={category.id} href={`/category/${category.id}`}>
+              <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm">
+                {category.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
       <GalleryClient images={gallery.images} />
     </div>
   );

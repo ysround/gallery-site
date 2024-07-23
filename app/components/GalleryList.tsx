@@ -1,12 +1,16 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { Gallery } from '../types/gallery';
+import Image from 'next/image';
+import { Gallery } from '../../types/gallery';
 
 interface GalleryListProps {
   galleries: Gallery[];
 }
 
 export default function GalleryList({ galleries }: GalleryListProps) {
+  if (!galleries || galleries.length === 0) {
+    return <p>No galleries found.</p>;
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {galleries.map((gallery) => (

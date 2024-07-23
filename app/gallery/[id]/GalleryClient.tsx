@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Modal from '../../components/Modal';
-import { Image as GalleryImage } from '../../types/gallery';
+import { Image as GalleryImage } from '../../../types/gallery';
 
 interface GalleryClientProps {
   images: GalleryImage[];
