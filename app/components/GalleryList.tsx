@@ -16,15 +16,15 @@ export default function GalleryList({ galleries }: GalleryListProps) {
       {galleries.map((gallery) => (
         <Link key={gallery.id} href={`/gallery/${gallery.id}`}>
           <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105">
-            <Image
-              src={gallery.coverImage}
-              alt={`Cover image for ${gallery.title}`}
-              width={400}
-              height={300}
-              layout="responsive"
-              objectFit="cover"
-              className="w-full h-48 object-cover"
-            />
+            <div className="relative w-full pt-[75%]"> {/* 4:3 アスペクト比 */}
+              <Image
+                src={gallery.coverImage}
+                alt={`Cover image for ${gallery.title}`}
+                layout="fill"
+                objectFit="cover"
+                className="absolute top-0 left-0 w-full h-full"
+              />
+            </div>
             <div className="p-4">
               <h2 className="text-xl font-semibold mb-2">{gallery.title}</h2>
               <p className="text-gray-600 text-sm">{gallery.description}</p>

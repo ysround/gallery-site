@@ -44,9 +44,8 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
         <Image
           src={gallery.coverImage}
           alt={`Cover image for ${gallery.title}`}
-          fill
-          sizes="100vw"
-          style={{ objectFit: 'cover' }}
+          layout="fill"
+          objectFit="cover"
           className="rounded-lg"
         />
       </div>

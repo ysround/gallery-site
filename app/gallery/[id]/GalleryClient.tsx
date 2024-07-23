@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Modal from '../../components/Modal';
-import { Image as GalleryImage } from '../../../types/gallery';
+import { Image as GalleryImage } from '@/types/gallery';
 
 interface GalleryClientProps {
   images: GalleryImage[];
@@ -18,17 +18,15 @@ export default function GalleryClient({ images }: GalleryClientProps) {
         {images.map((image, index) => (
           <div 
             key={index} 
-            className="relative h-64 overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer"
+            className="relative w-full pb-[56.25%] overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer"
             onClick={() => setSelectedImage(image)}
           >
             <Image
               src={image.src}
               alt={image.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              style={{ objectFit: 'cover' }}
-              className="transition-transform duration-300 ease-in-out hover:scale-110"
-              priority={index === 0}
+              layout="fill"
+              objectFit="contain"
+              className="absolute top-0 left-0 w-full h-full"
             />
           </div>
         ))}
@@ -36,13 +34,12 @@ export default function GalleryClient({ images }: GalleryClientProps) {
 
       {selectedImage && (
         <Modal onClose={() => setSelectedImage(null)}>
-          <div className="relative w-full h-[60vh]">
+          <div className="relative w-full h-[80vh]">
             <Image
               src={selectedImage.src}
               alt={selectedImage.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, 80vw"
-              style={{ objectFit: 'contain' }}
+              layout="fill"
+              objectFit="contain"
             />
           </div>
         </Modal>
