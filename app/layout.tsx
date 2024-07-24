@@ -30,12 +30,18 @@ export default async function RootLayout({
           </div>
         </nav>
         <div className="container mx-auto flex-grow flex flex-col md:flex-row">
+          {/* モバイル用カテゴリーリスト */}
+          <div className="md:hidden w-full p-4 bg-gray-100 overflow-x-auto">
+            <CategoryList categories={categories} isMobile={true} />
+          </div>
+          {/* メインコンテンツ */}
           <main className="w-full md:w-3/4 p-4 order-2 md:order-1">
             {children}
           </main>
-          <aside className="w-full md:w-1/4 p-4 bg-gray-100 order-1 md:order-2">
+          {/* PC用サイドバー */}
+          <aside className="hidden md:block w-full md:w-1/4 p-4 bg-gray-100 order-1 md:order-2">
             <h2 className="text-xl font-bold mb-4">Categories</h2>
-            <CategoryList categories={categories} />
+            <CategoryList categories={categories} isMobile={false} />
           </aside>
         </div>
         <footer className="bg-gray-800 text-white p-4">

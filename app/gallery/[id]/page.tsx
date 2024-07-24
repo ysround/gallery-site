@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getGalleryById, getCategoryById } from '@/utils/galleryData';
 import GalleryClient from './GalleryClient';
 import { Category } from '@/types/gallery';
+import Breadcrumb from '../../components/Breadcrumb';
 
 interface GalleryPageProps {
   params: {
@@ -38,14 +39,20 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
   const categoryPromises = gallery.categories.map(getCategoryById);
   const categories = (await Promise.all(categoryPromises)).filter((category): category is Category => category !== undefined);
 
+  const breadcrumbItems = [
+    { label: 'Galleries', href: '/' },
+    { label: gallery.title, href: `/gallery/${gallery.id}` },
+  ];
+
   return (
     <div>
+      <Breadcrumb items={breadcrumbItems} />
       <div className="relative w-full h-64 mb-6">
         <Image
           src={gallery.coverImage}
           alt={`Cover image for ${gallery.title}`}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: 'cover' }}
           className="rounded-lg"
         />
       </div>
