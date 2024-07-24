@@ -1,4 +1,4 @@
-import { Gallery, Category } from '../types/gallery';
+import { Gallery, Category } from '@/types/gallery';
 import path from 'path';
 import fs from 'fs/promises';
 import getConfig from 'next/config';
@@ -48,4 +48,17 @@ export async function getCategoryById(id: number): Promise<Category | undefined>
 export async function getGalleriesByCategory(categoryId: number): Promise<Gallery[]> {
   const allGalleries = await getAllGalleries();
   return allGalleries.filter(gallery => gallery.categories.includes(categoryId));
+}
+
+export async function getCategoryGalleryCounts(): Promise<Record<number, number>> {
+  const galleries = await getAllGalleries();
+  const counts: Record<number, number> = {};
+  
+  galleries.forEach(gallery => {
+    gallery.categories.forEach(categoryId => {
+      counts[categoryId] = (counts[categoryId] || 0) + 1;
+    });
+  });
+  
+  return counts;
 }
