@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from './components/Navigation'
 import Sidebar from './components/Sidebar'
+import { getAllCategories } from '@/utils/galleryData'
 
 export const metadata: Metadata = {
   title: {
@@ -48,26 +49,41 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const categories = await getAllCategories();
+
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
-        <header className="bg-gray-800 text-white p-4">
-          <div className="container mx-auto">
-            <Navigation />
+      <body>
+        <nav className="bg-gray-800 text-white p-4">
+          <div className="container mx-auto flex justify-between items-center">
+            <Link href="/" className="text-2xl font-bold">Gallery Site</Link>
+            <ul className="flex space-x-4">
+              <li><Link href="/">Home</Link></li>
+              {categories.map(category => (
+                <li key={category.id}>
+                  <Link href={`/category/${category.id}`}>{category.name}</Link>
+                </li>
+              ))}
+              <li><Link href="/terms">利用規約</Link></li>
+              <li><Link href="/disclaimer">免責事項</Link></li>
+            </ul>
           </div>
-        </header>
-        <div className="container mx-auto flex-grow flex flex-col md:flex-row">
-          <main className="flex-grow p-4 w-full md:w-3/4">
-            {children}
-          </main>
-          <aside className="w-full md:w-1/4 p-4 bg-gray-100">
-            <Sidebar />
-          </aside>
-        </div>
-        <footer className="bg-gray-800 text-white p-4">
+        </nav>
+        <main className="container mx-auto mt-8">
+          {children}
+        </main>
+        <footer className="bg-gray-800 text-white p-4 mt-8">
           <div className="container mx-auto text-center">
-            © 2024 Gallery Site. All rights reserved.
+            <p>&copy; 2023 Gallery Site. All rights reserved.</p>
+            <div className="flex justify-center space-x-4 mt-2">
+              <Link href="/terms" className="text-gray-300 hover:text-white">利用規約</Link>
+              <Link href="/disclaimer" className="text-gray-300 hover:text-white">免責事項</Link>
+            </div>
           </div>
         </footer>
       </body>

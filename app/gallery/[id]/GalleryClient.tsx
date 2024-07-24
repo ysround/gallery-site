@@ -2,48 +2,63 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import Modal from '../../components/Modal';
 import { Image as GalleryImage } from '@/types/gallery';
 
 interface GalleryClientProps {
   images: GalleryImage[];
 }
 
+const IMAGES_PER_PAGE = 30;
+
 export default function GalleryClient({ images }: GalleryClientProps) {
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const indexOfLastImage = currentPage * IMAGES_PER_PAGE;
+  const indexOfFirstImage = indexOfLastImage - IMAGES_PER_PAGE;
+  const currentImages = images.slice(indexOfFirstImage, indexOfLastImage);
+
+  const totalPages = Math.ceil(images.length / IMAGES_PER_PAGE);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);
+  };
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((image, index) => (
-          <div 
-            key={index} 
-            className="relative w-full pb-[56.25%] overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer"
-            onClick={() => setSelectedImage(image)}
-          >
+    <div>
+      <div className="space-y-4">
+        {currentImages.map((image, index) => (
+          <div key={index} className="w-full">
             <Image
               src={image.src}
               alt={image.alt}
-              layout="fill"
+              width={1200}
+              height={800}
+              layout="responsive"
               objectFit="contain"
-              className="absolute top-0 left-0 w-full h-full"
+              className="rounded-lg"
             />
           </div>
         ))}
       </div>
 
-      {selectedImage && (
-        <Modal onClose={() => setSelectedImage(null)}>
-          <div className="relative w-full h-[80vh]">
-            <Image
-              src={selectedImage.src}
-              alt={selectedImage.alt}
-              layout="fill"
-              objectFit="contain"
-            />
-          </div>
-        </Modal>
+      {totalPages > 1 && (
+        <div className="mt-8 flex justify-center space-x-2">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-4 py-2 rounded ${
+                currentPage === page
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
       )}
-    </>
+    </div>
   );
 }
