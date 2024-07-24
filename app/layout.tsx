@@ -1,8 +1,9 @@
 import './globals.css'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { getAllCategories, getCategoryGalleryCounts } from '@/utils/galleryData'
-import CategoryList from './components/CategoryList'
+import { getAllCategories } from '@/utils/galleryData'
+import CategoryList from '@/app/components/CategoryList'
+import ScrollToTopButton from '@/app/components/ScrollToTopButton'
 
 export const metadata: Metadata = {
   title: 'Gallery Site',
@@ -15,7 +16,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const categories = await getAllCategories();
-  const categoryCounts = await getCategoryGalleryCounts();
 
   return (
     <html lang="en">
@@ -24,9 +24,8 @@ export default async function RootLayout({
           <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className="text-2xl font-bold">Gallery Site</Link>
             <ul className="flex space-x-4">
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/terms">利用規約</Link></li>
-              <li><Link href="/disclaimer">免責事項</Link></li>
+              <li><Link href="/terms" className="hover:text-gray-300">利用規約</Link></li>
+              <li><Link href="/disclaimer" className="hover:text-gray-300">免責事項</Link></li>
             </ul>
           </div>
         </nav>
@@ -36,7 +35,7 @@ export default async function RootLayout({
           </main>
           <aside className="w-full md:w-1/4 p-4 bg-gray-100 order-1 md:order-2">
             <h2 className="text-xl font-bold mb-4">Categories</h2>
-            <CategoryList categories={categories} counts={categoryCounts} />
+            <CategoryList categories={categories} />
           </aside>
         </div>
         <footer className="bg-gray-800 text-white p-4">
@@ -48,6 +47,7 @@ export default async function RootLayout({
             </div>
           </div>
         </footer>
+        <ScrollToTopButton />
       </body>
     </html>
   )
