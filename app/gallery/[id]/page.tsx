@@ -47,12 +47,15 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
   return (
     <div>
       <Breadcrumb items={breadcrumbItems} />
-      <div className="relative w-full h-64 mb-6">
+      <div className="relative w-full aspect-w-16 aspect-h-9 mb-6">
         <Image
           src={gallery.coverImage}
           alt={`Cover image for ${gallery.title}`}
           fill
+          sizes="100vw"
           style={{ objectFit: 'cover' }}
+          quality={85}
+          priority={true}
           className="rounded-lg"
         />
       </div>
