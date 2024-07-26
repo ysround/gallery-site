@@ -12,16 +12,12 @@ export default function GalleryList({ galleries }: GalleryListProps) {
       {galleries.map((gallery) => (
         <Link key={gallery.id} href={`/gallery/${gallery.id}`}>
           <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105">
-            <div className="relative aspect-w-16 aspect-h-9">
+            <div className="relative w-full h-48">
               <Image
                 src={gallery.coverImage}
                 alt={`Cover image for ${gallery.title}`}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                style={{ objectFit: 'cover' }}
-                quality={80}
-                priority={false}
-                loading="lazy"
+                layout="fill"
+                objectFit="cover"
               />
             </div>
             <div className="p-4">

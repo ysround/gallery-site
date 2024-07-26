@@ -1,11 +1,18 @@
 import { Metadata } from 'next';
-import { getCategoryById, getGalleriesByCategory } from '@/utils/galleryData';
 import GalleryList from '../../components/GalleryList';
+import { getAllCategories, getCategoryById, getGalleriesByCategory } from '@/utils/galleryData';
 
 interface CategoryPageProps {
   params: {
     id: string;
   };
+}
+
+export async function generateStaticParams() {
+  const categories = await getAllCategories();
+  return categories.map((category) => ({
+    id: category.id.toString(),
+  }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

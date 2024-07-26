@@ -1,15 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getGalleryById, getCategoryById } from '@/utils/galleryData';
 import GalleryClient from './GalleryClient';
 import { Category } from '@/types/gallery';
 import Breadcrumb from '../../components/Breadcrumb';
+import { getAllGalleries, getGalleryById, getCategoryById } from '@/utils/galleryData';
 
 interface GalleryPageProps {
   params: {
     id: string;
   };
+}
+
+export async function generateStaticParams() {
+  const galleries = await getAllGalleries();
+  return galleries.map((gallery) => ({
+    id: gallery.id.toString(),
+  }));
 }
 
 export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
@@ -47,15 +54,13 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
   return (
     <div>
       <Breadcrumb items={breadcrumbItems} />
-      <div className="relative w-full aspect-w-16 aspect-h-9 mb-6">
+      <div className="relative w-full h-64 mb-6">
         <Image
           src={gallery.coverImage}
           alt={`Cover image for ${gallery.title}`}
-          fill
-          sizes="100vw"
-          style={{ objectFit: 'cover' }}
-          quality={85}
-          priority={true}
+          layout="fill"
+          objectFit="cover"
+          priority
           className="rounded-lg"
         />
       </div>

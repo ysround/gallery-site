@@ -26,7 +26,7 @@ export default function GalleryClient({ images }: GalleryClientProps) {
 
   return (
     <div>
-      <div className="space-y-4">
+      <div className="space-y-8">
         {currentImages.map((image, index) => (
           <div key={index} className="w-full">
             <Image
