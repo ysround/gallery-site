@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import getConfig from 'next/config';
 
+
 const { serverRuntimeConfig } = getConfig();
 
 export async function getAllGalleries(): Promise<Gallery[]> {
@@ -33,11 +34,36 @@ export async function getAllCategories(): Promise<Category[]> {
     if (!Array.isArray(data)) {
       throw new Error('Categories data is not an array');
     }
-    return data;
+    return buildCategoryHierarchy(data);
   } catch (error) {
     console.error('Error fetching categories:', error);
     return [];
   }
+}
+
+function buildCategoryHierarchy(categories: Category[]): Category[] {
+  const categoryMap = new Map<number, Category>();
+  const rootCategories: Category[] = [];
+
+  // First pass: Create a map of all categories
+  categories.forEach(category => {
+    categoryMap.set(category.id, { ...category, children: [] });
+  });
+
+  // Second pass: Build the hierarchy
+  categories.forEach(category => {
+    const categoryWithChildren = categoryMap.get(category.id)!;
+    if (category.parentId === null) {
+      rootCategories.push(categoryWithChildren);
+    } else {
+      const parentCategory = categoryMap.get(category.parentId);
+      if (parentCategory) {
+        parentCategory.children?.push(categoryWithChildren);
+      }
+    }
+  });
+
+  return rootCategories;
 }
 
 export async function getCategoryById(id: number): Promise<Category | undefined> {

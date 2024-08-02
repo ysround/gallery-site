@@ -7,6 +7,8 @@ export interface Category {
   id: number;
   name: string;
   description: string;
+  parentId: number | null;
+  children?: Category[];
 }
 
 export interface Gallery {
